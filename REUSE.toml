@@ -1,0 +1,40 @@
+version = 1
+
+# REUSE.toml: declarative license/copyright annotations for files that cannot
+# carry inline SPDX headers (JSON-LD and CSV data files cannot hold a comment
+# header) or that need an override.
+#
+# Prose, source, and meta files are Apache-2.0. Submitted datasets and the
+# catalog index they generate are data, licensed CDLA-Permissive-2.0. A
+# submission's own README carries an inline Apache-2.0 header, which, per
+# REUSE precedence, always wins over the aggregate rule below for that file,
+# so documentation under submissions/ does not need its own override block
+# here.
+
+# -----------------------------------------------------------------------------
+# Submitted datasets under submissions/: data, not prose or tooling.
+# -----------------------------------------------------------------------------
+[[annotations]]
+path = ["submissions/**"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "The submission's contributor, named in its pull request"
+SPDX-License-Identifier = "CDLA-Permissive-2.0"
+
+# -----------------------------------------------------------------------------
+# The catalog index: machine-generated from submitted datasets, licensed as
+# data like the submissions it summarizes.
+# -----------------------------------------------------------------------------
+[[annotations]]
+path = ["catalog/**/*.csv"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "The URPX Authors"
+SPDX-License-Identifier = "CDLA-Permissive-2.0"
+
+# -----------------------------------------------------------------------------
+# Binary raster images, SVG diagrams, and their Graphviz DOT sources.
+# -----------------------------------------------------------------------------
+[[annotations]]
+path = ["**/*.png", "**/*.jpg", "**/*.jpeg", "**/*.svg", "**/*.dot"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "The URPX Authors"
+SPDX-License-Identifier = "Apache-2.0"
