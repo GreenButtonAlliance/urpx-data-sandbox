@@ -7,24 +7,21 @@
 
 ## Directory shape
 
-A submission lives at:
+A submission lives in its own directory under `submissions/`:
 
 ```
-submissions/<country>/<state>/<utility>/<commodity>/
+submissions/<submission-name>/
 ```
 
-- `<country>`: the two-letter country code, lowercase (for example `us`).
-- `<state>`: the ISO 3166-2 subdivision code, lowercase (for example `us-ca` for California). Use the correct subdivision code for the country; do not abbreviate informally.
-- `<utility>`: a kebab-case slug for the utility (for example `pge` or `con-edison`).
-- `<commodity>`: the commodity type (for example `electric` or `gas`). A utility with more than one commodity gets a directory per commodity, not a combined one.
+- `<submission-name>`: a short kebab-case slug you choose, for example `pge-e-tou-c` or `con-edison-steam-sc1`. The name helps a human find the files; it carries no meaning for the catalog.
 
-Utility-specific identifiers such as service classes are not directory levels; record them as metadata in the submitted dataset instead.
+The directory does not encode a country, state, utility, commodity, or service class. The catalog reads all of those from the metadata in the submitted documents: the utility from its `UtilityOperator`, the commodity from `urpx:commodity`, the rate plans from their `ratePlanUniqueIdentifier` and `name`, the service class from `urpx:serviceClassName`, the version from `urpx:targetURPXVersion`, and the effective dates from the rate plan versions. Record those facts in the dataset, not in the path. Keep one submission per directory; a schedule you want listed on its own goes in its own directory.
 
-See [`_template/`](_template/) for the shape with a README at each level, and [`_template/country/state/utility/commodity/README.md`](_template/country/state/utility/commodity/README.md) for what a submission at that depth carries.
+See [`_template/`](_template/) for what a submission carries.
 
 ## How to submit
 
-1. Fork the repository and create the directory for your submission, following the shape above.
+1. Fork the repository and create a directory for your submission under `submissions/`.
 2. Add your dataset, and vendor its source document (include a copy, not only a link) alongside it.
 3. Open a pull request using the [pull request template](../.github/PULL_REQUEST_TEMPLATE.md), which asks for the utility, the jurisdiction, the source-document reference, the declared URPX version, whether the dataset was built from a real dataset, and the effective and service-period dates.
 4. Gate 1 runs automatically: SHACL validation against the shapes of the URPX version you declared, plus summary queries that record the submission in the [catalog index](../catalog/README.md).

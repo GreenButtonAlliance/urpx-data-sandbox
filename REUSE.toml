@@ -22,10 +22,13 @@ SPDX-License-Identifier = "CDLA-Permissive-2.0"
 
 # -----------------------------------------------------------------------------
 # The catalog index: machine-generated from submitted datasets, licensed as
-# data like the submissions it summarizes.
+# data like the submissions it summarizes. Both projections (the CSV table and
+# the JSON-LD DCAT catalog) are data. The catalog's JSON Schema is tooling and
+# carries its own Apache-2.0 .license sidecar, which takes precedence over
+# these aggregate rules for that file.
 # -----------------------------------------------------------------------------
 [[annotations]]
-path = ["catalog/**/*.csv"]
+path = ["catalog/**/*.csv", "catalog/**/*.jsonld"]
 precedence = "aggregate"
 SPDX-FileCopyrightText = "The URPX Authors"
 SPDX-License-Identifier = "CDLA-Permissive-2.0"

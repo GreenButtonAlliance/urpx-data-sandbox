@@ -18,6 +18,7 @@ This repository does not carry the standard repository's length and verbosity li
 - **Plain, factual voice.** Describe the dataset and the change, not the process that produced it.
 - **Prose formatting.** Write for a person reading and reviewing the text. Do not hard-wrap a paragraph mid-sentence to hit a column width. Keep paragraphs and sentences short.
 - **The disclaimer travels with the data.** Do not remove or soften the disclaimer in [README.md](README.md) when adding a submission's own README.
+- **Scope restraint.** This repository provides the submission process and the cataloguing system, and nothing more. It does not host, resolve, serve, or answer queries over the submitted data; a service that does is a data publisher implementation's role. A change that would make the sandbox host or serve the data, or publish the catalog's data as resolvable linked data, belongs in a working-group discussion, not a pull request here. Keep changes within this scope and as small as the job allows, mindful of maintainer capacity. See the [repository README's Scope section](README.md).
 
 ## Submissions
 
