@@ -19,7 +19,8 @@
 
 ## Checklist
 
-- [ ] The dataset lives under `submissions/<country>/<state>/<utility>/<commodity>/`.
+- [ ] The dataset lives in its own directory under `submissions/`.
+- [ ] The dataset carries the metadata the catalog reads — the utility, the commodity, and the rate plans' identifiers and names — rather than relying on the directory name.
 - [ ] The source document is vendored alongside the dataset.
 - [ ] The dataset declares the URPX version it targets.
 - [ ] This is a dataset submission, not a proposed change to the ontology or SHACL shapes.

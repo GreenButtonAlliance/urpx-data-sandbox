@@ -1,0 +1,97 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/urpx-org/urpx-data-sandbox/schemas/submissions-index-1.0.0.json",
+  "title": "URPX data sandbox submissions catalog",
+  "description": "Shape of catalog/submissions-index.jsonld, the machine-generated DCAT catalog of submissions that have passed gate 1. Each entry's facets are read from the submitted metadata, not from the directory path. scripts/update_catalog_index.py validates its output against this schema; do not hand-edit the catalog.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["@context", "@id", "@type", "title", "description", "dataset"],
+  "properties": {
+    "@context": { "type": "object" },
+    "@id": { "type": "string" },
+    "@type": { "const": "dcat:Catalog" },
+    "title": { "type": "string" },
+    "description": { "type": "string" },
+    "dataset": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/dataset" }
+    }
+  },
+  "definitions": {
+    "dataset": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "@id",
+        "@type",
+        "storagePath",
+        "ratePlanCount",
+        "ratePlanVersionCount",
+        "pricingModelCount",
+        "priceDefinitionCount",
+        "priceCount",
+        "hasExternalPriceReference",
+        "dateAdded",
+        "distribution"
+      ],
+      "properties": {
+        "@id": { "type": "string" },
+        "@type": { "const": "dcat:Dataset" },
+        "storagePath": { "type": "string", "pattern": "^submissions/" },
+        "utility": { "type": "string" },
+        "jurisdiction": { "type": "string" },
+        "commodity": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "serviceClass": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "rateGroup": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "ratePlan": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/ratePlan" }
+        },
+        "conformsTo": { "type": "string" },
+        "urpxVersion": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+        "ratePlanCount": { "type": "integer", "minimum": 0 },
+        "ratePlanVersionCount": { "type": "integer", "minimum": 0 },
+        "pricingModelCount": { "type": "integer", "minimum": 0 },
+        "priceDefinitionCount": { "type": "integer", "minimum": 0 },
+        "priceCount": { "type": "integer", "minimum": 0 },
+        "effectiveDateStart": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}" },
+        "effectiveDateEnd": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}" },
+        "hasExternalPriceReference": { "type": "boolean" },
+        "dateAdded": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
+        "distribution": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/distribution" }
+        }
+      }
+    },
+    "ratePlan": {
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "ratePlanIdentifier": { "type": "string" },
+        "ratePlanName": { "type": "string" }
+      }
+    },
+    "distribution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["@type", "downloadURL", "mediaType", "fileKind"],
+      "properties": {
+        "@type": { "const": "dcat:Distribution" },
+        "downloadURL": { "type": "string", "pattern": "^submissions/" },
+        "mediaType": { "type": "string" },
+        "fileKind": { "enum": ["instance", "source"] }
+      }
+    }
+  }
+}

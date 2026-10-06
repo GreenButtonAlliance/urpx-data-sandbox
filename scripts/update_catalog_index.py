@@ -2,27 +2,125 @@
 # SPDX-FileCopyrightText: The URPX Authors
 # SPDX-License-Identifier: Apache-2.0
 
-"""Regenerate catalog/submissions-index.csv from the submissions that pass gate 1.
+"""Regenerate the submissions catalog index from the submissions that pass gate 1.
 
-Runs the SPARQL summary queries gate 1 promises: counts of the principal
-classes, the effective-date range, and whether the submission carries an
-externally-priced reference. This file is machine-owned output; it never
-shares a commit path with a hand-edited file, and a hand edit to the CSV is
-overwritten on the next run.
+A submission is a directory of files under ``submissions/``. Its place in the
+tree carries no meaning: the catalog reads what a submission is — the utility,
+the commodity, the rate plans, the service class, the URPX version, the
+effective dates — from the metadata in the submitted documents, not from the
+directory path. The browsing hierarchy emerges from those facets.
+
+The catalog is published in two projections of one source of truth, the
+``submissions/`` tree:
+
+* ``catalog/submissions-index.jsonld`` — a DCAT catalog, one ``dcat:Dataset``
+  per submission with a ``dcat:Distribution`` per file, carrying the facets and
+  summary counts as a queryable graph.
+* ``catalog/submissions-index.csv`` — the same submissions as a flat table, so
+  the sandbox is browsable without a JSON-LD or SPARQL tool.
+
+Both are machine-owned output. They never share a commit path with a
+hand-edited file, and a hand edit is overwritten on the next run.
+
+Subcommands::
+
+    build  <submissions-dir> <catalog-dir>   write both index files
+    check  <submissions-dir> <catalog-dir>   verify the committed index
+
+``build`` runs after a merge to the default branch. ``check`` runs on a pull
+request: it verifies the two projections agree, that the JSON-LD is valid
+against ``submissions-index.schema.json``, and that no indexed row was
+hand-edited. ``check`` does not require a brand-new submission to be indexed
+yet, because indexing happens after merge, not on the pull request.
 """
 
 from __future__ import annotations
 
+import argparse
 import csv
 import datetime
+import io
+import json
 import pathlib
 import sys
 
 from rdflib import Graph
 
+from corpus import corpus_files, find_submission_dirs, media_type, repo_relative
 from urpx_version import release_version
 
-URPX = "https://urpx.org/ns/ontology/"
+# Provisional, sandbox-local vocabulary for the catalog's own terms — the facets
+# read from the submitted metadata and the summary counts — that DCAT and Dublin
+# Core do not cover. It is rooted at this repository, not at a urpx.org
+# namespace, because nothing here is normative; the working group decides
+# whether these terms graduate to an agreed namespace. See catalog/README.md.
+SDX = "https://github.com/urpx-org/urpx-data-sandbox/ns#"
+
+CATALOG_CONTEXT = {
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "dct": "http://purl.org/dc/terms/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "sdx": SDX,
+    "title": "dct:title",
+    "description": "dct:description",
+    "dataset": {"@id": "dcat:dataset", "@container": "@set"},
+    "distribution": {"@id": "dcat:distribution", "@container": "@set"},
+    "conformsTo": {"@id": "dct:conformsTo", "@type": "@id"},
+    "downloadURL": {"@id": "dcat:downloadURL", "@type": "xsd:anyURI"},
+    "mediaType": "dcat:mediaType",
+    "fileKind": "sdx:fileKind",
+    "storagePath": "sdx:storagePath",
+    "utility": "sdx:utility",
+    "jurisdiction": "sdx:jurisdiction",
+    "commodity": {"@id": "sdx:commodity", "@container": "@set"},
+    "serviceClass": {"@id": "sdx:serviceClass", "@container": "@set"},
+    "rateGroup": {"@id": "sdx:rateGroup", "@container": "@set"},
+    "ratePlan": {"@id": "sdx:ratePlan", "@container": "@set"},
+    "ratePlanIdentifier": "sdx:ratePlanIdentifier",
+    "ratePlanName": "sdx:ratePlanName",
+    "urpxVersion": "sdx:urpxVersion",
+    "ratePlanCount": {"@id": "sdx:ratePlanCount", "@type": "xsd:integer"},
+    "ratePlanVersionCount": {"@id": "sdx:ratePlanVersionCount", "@type": "xsd:integer"},
+    "pricingModelCount": {"@id": "sdx:pricingModelCount", "@type": "xsd:integer"},
+    "priceDefinitionCount": {"@id": "sdx:priceDefinitionCount", "@type": "xsd:integer"},
+    "priceCount": {"@id": "sdx:priceCount", "@type": "xsd:integer"},
+    "effectiveDateStart": {"@id": "sdx:effectiveDateStart", "@type": "xsd:date"},
+    "effectiveDateEnd": {"@id": "sdx:effectiveDateEnd", "@type": "xsd:date"},
+    "hasExternalPriceReference": {"@id": "sdx:hasExternalPriceReference", "@type": "xsd:boolean"},
+    "dateAdded": {"@id": "sdx:dateAdded", "@type": "xsd:date"},
+}
+
+CATALOG_TITLE = "URPX data sandbox submissions catalog"
+CATALOG_DESCRIPTION = (
+    "Machine-generated index of every submission under submissions/ that has "
+    "passed gate 1. Each entry's facets — utility, commodity, rate plans, "
+    "service class, version, dates — are read from the submitted metadata, not "
+    "from the directory path. Regenerated by scripts/update_catalog_index.py "
+    "on every push to the default branch; do not hand-edit."
+)
+
+JSONLD_NAME = "submissions-index.jsonld"
+CSV_NAME = "submissions-index.csv"
+SCHEMA_NAME = "submissions-index.schema.json"
+
+CSV_HEADER = [
+    "storage_path",
+    "utility",
+    "jurisdiction",
+    "commodity",
+    "rate_plans",
+    "service_class",
+    "urpx_version",
+    "rate_plan_count",
+    "rate_plan_version_count",
+    "pricing_model_count",
+    "price_definition_count",
+    "price_count",
+    "effective_date_start",
+    "effective_date_end",
+    "has_external_price_reference",
+    "date_added",
+]
 
 CLASS_COUNT_QUERY = """
 PREFIX urpx: <https://urpx.org/ns/ontology/>
@@ -41,10 +139,53 @@ WHERE {
 }
 """
 
-EFFECTIVE_DATE_QUERY = """
+UTILITY_QUERY = """
 PREFIX urpx: <https://urpx.org/ns/ontology/>
-SELECT (MIN(?date) AS ?minDate) (MAX(?date) AS ?maxDate)
-WHERE { ?s urpx:effectiveDate ?date }
+SELECT DISTINCT ?utility WHERE {
+  ?u a urpx:UtilityOperator .
+  OPTIONAL { ?u urpx:legalName ?legalName }
+  OPTIONAL { ?u urpx:name ?name }
+  BIND(COALESCE(?legalName, ?name) AS ?utility)
+  FILTER(BOUND(?utility))
+}
+"""
+
+COMMODITY_QUERY = """
+PREFIX urpx: <https://urpx.org/ns/ontology/>
+SELECT DISTINCT ?commodity WHERE { ?x urpx:commodity ?commodity }
+"""
+
+RATE_PLAN_QUERY = """
+PREFIX urpx: <https://urpx.org/ns/ontology/>
+SELECT DISTINCT ?identifier ?name WHERE {
+  ?rp a urpx:RatePlan .
+  OPTIONAL { ?rp urpx:ratePlanUniqueIdentifier ?identifier }
+  OPTIONAL { ?rp urpx:name ?name }
+}
+"""
+
+SERVICE_CLASS_QUERY = """
+PREFIX urpx: <https://urpx.org/ns/ontology/>
+SELECT DISTINCT ?serviceClass WHERE { ?x urpx:serviceClassName ?serviceClass }
+"""
+
+RATE_GROUP_QUERY = """
+PREFIX urpx: <https://urpx.org/ns/ontology/>
+SELECT DISTINCT ?rateGroup WHERE { ?x urpx:rateGroupIdentifier ?rateGroup }
+"""
+
+JURISDICTION_QUERY = """
+PREFIX urpx: <https://urpx.org/ns/ontology/>
+SELECT DISTINCT ?jurisdiction WHERE { ?x urpx:identifierJurisdiction ?jurisdiction }
+"""
+
+EFFECTIVE_DATES_QUERY = """
+PREFIX urpx: <https://urpx.org/ns/ontology/>
+SELECT ?date WHERE {
+  { ?s urpx:effectiveDate ?date } UNION
+  { ?s urpx:effectiveDateTime ?date } UNION
+  { ?s urpx:initialEffectiveDate ?date }
+}
 """
 
 EXTERNAL_REFERENCE_QUERY = """
@@ -57,110 +198,361 @@ PREFIX urpx: <https://urpx.org/ns/ontology/>
 SELECT ?version WHERE { ?s urpx:targetURPXVersion ?version } LIMIT 1
 """
 
-CSV_HEADER = [
-    "submission_path",
-    "utility",
-    "jurisdiction",
-    "urpx_version",
-    "rate_plan_count",
-    "rate_plan_version_count",
-    "pricing_model_count",
-    "price_definition_count",
-    "price_count",
-    "effective_date_start",
-    "effective_date_end",
-    "has_external_price_reference",
-    "date_added",
-]
 
+# ---------------------------------------------------------------------------
+# Summaries
+#
+# Corpus discovery (find_submission_dirs, corpus_files, repo_relative,
+# media_type) lives in corpus.py, which has no RDF dependency, so the walker
+# and this generator find and classify files the same way.
+# ---------------------------------------------------------------------------
 
-def find_submission_dirs(root: pathlib.Path) -> list[pathlib.Path]:
-    """A submission lives four levels deep: country/state/utility/commodity."""
-    dirs = []
-    for commodity_dir in root.glob("*/*/*/*"):
-        if "_template" in commodity_dir.parts:
-            continue
-        if commodity_dir.is_dir() and any(commodity_dir.glob("*.jsonld")):
-            dirs.append(commodity_dir)
-    return sorted(dirs)
+def local_name(value: object) -> str:
+    """The local name of an IRI value, e.g. urpx:electricity -> electricity."""
+    text = str(value)
+    return text.rsplit("#", 1)[-1].rsplit("/", 1)[-1]
 
 
 def load_graph(submission_dir: pathlib.Path) -> Graph:
     graph = Graph()
-    for jsonld_file in sorted(submission_dir.glob("*.jsonld")):
+    for jsonld_file in sorted(submission_dir.rglob("*.jsonld")):
         graph.parse(data=jsonld_file.read_text(), format="json-ld")
     return graph
 
 
-def summarize(submission_dir: pathlib.Path, root: pathlib.Path) -> dict[str, str]:
+def _column(graph: Graph, query: str, field: str) -> list[str]:
+    """Distinct, sorted, non-empty string values of one SELECT variable."""
+    values = {str(getattr(row, field)) for row in graph.query(query)
+              if getattr(row, field) is not None}
+    return sorted(value for value in values if value)
+
+
+def _rate_plans(graph: Graph) -> list[dict]:
+    seen = {}
+    for row in graph.query(RATE_PLAN_QUERY):
+        identifier = str(row.identifier) if row.identifier is not None else ""
+        name = str(row.name) if row.name is not None else ""
+        if not identifier and not name:
+            continue
+        plan = {}
+        if identifier:
+            plan["ratePlanIdentifier"] = identifier
+        if name:
+            plan["ratePlanName"] = name
+        seen[(identifier, name)] = plan
+    return [seen[key] for key in sorted(seen)]
+
+
+def summarize(submission_dir: pathlib.Path, base: pathlib.Path) -> dict:
+    """Summarize one submission into the fields both projections draw from."""
     graph = load_graph(submission_dir)
-    relative = submission_dir.relative_to(root.parent)
-    country, state, utility, commodity = submission_dir.parts[-4:]
+    storage_path = repo_relative(submission_dir, base)
 
     counts = next(iter(graph.query(CLASS_COUNT_QUERY)))
-    dates = next(iter(graph.query(EFFECTIVE_DATE_QUERY)))
-    has_external_reference = bool(next(iter(graph.query(EXTERNAL_REFERENCE_QUERY))))
+    has_external = bool(next(iter(graph.query(EXTERNAL_REFERENCE_QUERY))))
     version_rows = list(graph.query(VERSION_QUERY))
-    version = release_version(str(version_rows[0].version)) if version_rows else ""
+
+    declared = str(version_rows[0].version) if version_rows else ""
+    try:
+        version = release_version(declared) if declared else ""
+    except ValueError:
+        version = ""
+
+    dates = sorted(str(row.date)[:10] for row in graph.query(EFFECTIVE_DATES_QUERY)
+                   if row.date is not None)
+
+    distributions = [
+        {
+            "@type": "dcat:Distribution",
+            "downloadURL": repo_relative(path, base),
+            "mediaType": media_type(path),
+            "fileKind": kind,
+        }
+        for kind, path in corpus_files(submission_dir)
+    ]
 
     return {
-        "submission_path": str(relative),
-        "utility": utility,
-        "jurisdiction": f"{state} ({country})",
+        "storage_path": storage_path,
+        "utility": "; ".join(_column(graph, UTILITY_QUERY, "utility")),
+        "jurisdiction": "; ".join(_column(graph, JURISDICTION_QUERY, "jurisdiction")),
+        "commodities": sorted({local_name(row.commodity) for row in graph.query(COMMODITY_QUERY)
+                               if row.commodity is not None}),
+        "rate_plans": _rate_plans(graph),
+        "service_classes": _column(graph, SERVICE_CLASS_QUERY, "serviceClass"),
+        "rate_groups": _column(graph, RATE_GROUP_QUERY, "rateGroup"),
+        "declared_version": declared,
         "urpx_version": version,
-        "rate_plan_count": str(counts.ratePlanCount),
-        "rate_plan_version_count": str(counts.ratePlanVersionCount),
-        "pricing_model_count": str(counts.pricingModelCount),
-        "price_definition_count": str(counts.priceDefinitionCount),
-        "price_count": str(counts.priceCount),
-        "effective_date_start": str(dates.minDate) if dates.minDate else "",
-        "effective_date_end": str(dates.maxDate) if dates.maxDate else "",
-        "has_external_price_reference": "yes" if has_external_reference else "no",
-        "commodity": commodity,
+        "rate_plan_count": int(counts.ratePlanCount),
+        "rate_plan_version_count": int(counts.ratePlanVersionCount),
+        "pricing_model_count": int(counts.pricingModelCount),
+        "price_definition_count": int(counts.priceDefinitionCount),
+        "price_count": int(counts.priceCount),
+        "effective_date_start": dates[0] if dates else "",
+        "effective_date_end": dates[-1] if dates else "",
+        "has_external_price_reference": has_external,
+        "distribution": distributions,
     }
 
 
+# ---------------------------------------------------------------------------
+# Projections
+# ---------------------------------------------------------------------------
+
+def dataset_entry(summary: dict) -> dict:
+    """A dcat:Dataset node for one submission, in a stable key order.
+
+    Every facet is read from the submitted metadata; a facet the submission
+    does not declare is omitted rather than guessed from the directory path.
+    """
+    entry = {
+        "@id": summary["storage_path"] + "/",
+        "@type": "dcat:Dataset",
+        "storagePath": summary["storage_path"],
+    }
+    if summary["utility"]:
+        entry["utility"] = summary["utility"]
+    if summary["jurisdiction"]:
+        entry["jurisdiction"] = summary["jurisdiction"]
+    if summary["commodities"]:
+        entry["commodity"] = summary["commodities"]
+    if summary["service_classes"]:
+        entry["serviceClass"] = summary["service_classes"]
+    if summary["rate_groups"]:
+        entry["rateGroup"] = summary["rate_groups"]
+    if summary["rate_plans"]:
+        entry["ratePlan"] = summary["rate_plans"]
+    if summary["declared_version"]:
+        entry["conformsTo"] = summary["declared_version"]
+    if summary["urpx_version"]:
+        entry["urpxVersion"] = summary["urpx_version"]
+    entry["ratePlanCount"] = summary["rate_plan_count"]
+    entry["ratePlanVersionCount"] = summary["rate_plan_version_count"]
+    entry["pricingModelCount"] = summary["pricing_model_count"]
+    entry["priceDefinitionCount"] = summary["price_definition_count"]
+    entry["priceCount"] = summary["price_count"]
+    if summary["effective_date_start"]:
+        entry["effectiveDateStart"] = summary["effective_date_start"]
+    if summary["effective_date_end"]:
+        entry["effectiveDateEnd"] = summary["effective_date_end"]
+    entry["hasExternalPriceReference"] = summary["has_external_price_reference"]
+    entry["dateAdded"] = summary["date_added"]
+    entry["distribution"] = summary["distribution"]
+    return entry
+
+
+def _format_rate_plan(plan: dict) -> str:
+    identifier = plan.get("ratePlanIdentifier", "")
+    name = plan.get("ratePlanName", "")
+    if identifier and name:
+        return f"{identifier} ({name})"
+    return identifier or name
+
+
+def csv_row(summary: dict) -> dict:
+    return {
+        "storage_path": summary["storage_path"],
+        "utility": summary["utility"],
+        "jurisdiction": summary["jurisdiction"],
+        "commodity": "; ".join(summary["commodities"]),
+        "rate_plans": "; ".join(_format_rate_plan(plan) for plan in summary["rate_plans"]),
+        "service_class": "; ".join(summary["service_classes"]),
+        "urpx_version": summary["urpx_version"],
+        "rate_plan_count": str(summary["rate_plan_count"]),
+        "rate_plan_version_count": str(summary["rate_plan_version_count"]),
+        "pricing_model_count": str(summary["pricing_model_count"]),
+        "price_definition_count": str(summary["price_definition_count"]),
+        "price_count": str(summary["price_count"]),
+        "effective_date_start": summary["effective_date_start"],
+        "effective_date_end": summary["effective_date_end"],
+        "has_external_price_reference": "yes" if summary["has_external_price_reference"] else "no",
+        "date_added": summary["date_added"],
+    }
+
+
+def catalog_document(summaries: list[dict]) -> dict:
+    return {
+        "@context": CATALOG_CONTEXT,
+        "@id": "submissions-index",
+        "@type": "dcat:Catalog",
+        "title": CATALOG_TITLE,
+        "description": CATALOG_DESCRIPTION,
+        "dataset": [dataset_entry(summary) for summary in summaries],
+    }
+
+
+def render_jsonld(document: dict) -> str:
+    return json.dumps(document, indent=2, ensure_ascii=False) + "\n"
+
+
+def render_csv(summaries: list[dict]) -> str:
+    buffer = io.StringIO()
+    writer = csv.DictWriter(buffer, fieldnames=CSV_HEADER, lineterminator="\n")
+    writer.writeheader()
+    for summary in summaries:
+        writer.writerow(csv_row(summary))
+    return buffer.getvalue()
+
+
+# ---------------------------------------------------------------------------
+# Generation
+# ---------------------------------------------------------------------------
+
 def load_existing_dates(csv_path: pathlib.Path) -> dict[str, str]:
+    """Preserve each submission's first-seen date, so the index does not churn."""
     if not csv_path.exists():
         return {}
     with csv_path.open(newline="", encoding="utf-8") as handle:
         return {
-            row["submission_path"]: row["date_added"]
+            row["storage_path"]: row["date_added"]
             for row in csv.DictReader(handle)
+            if row.get("storage_path") and row.get("date_added")
         }
 
 
-def main(argv: list[str]) -> int:
-    if len(argv) != 3:
-        print("usage: update_catalog_index.py <submissions-dir> <csv-out>", file=sys.stderr)
-        return 2
-
-    root = pathlib.Path(argv[1])
-    csv_path = pathlib.Path(argv[2])
+def build_summaries(root: pathlib.Path, csv_path: pathlib.Path) -> list[dict]:
+    base = root.resolve().parent
     existing_dates = load_existing_dates(csv_path)
     today = datetime.date.today().isoformat()
 
-    rows = []
+    summaries = []
     for submission_dir in find_submission_dirs(root):
         try:
-            row = summarize(submission_dir, root)
+            summary = summarize(submission_dir, base)
         except Exception as error:  # a submission that fails to parse is skipped, not fatal
             print(f"{submission_dir}: skipped ({error})", file=sys.stderr)
             continue
-        row.pop("commodity", None)
-        row["date_added"] = existing_dates.get(row["submission_path"], today)
-        rows.append(row)
+        summary["date_added"] = existing_dates.get(summary["storage_path"], today)
+        summaries.append(summary)
+    summaries.sort(key=lambda summary: summary["storage_path"])
+    return summaries
 
-    csv_path.parent.mkdir(parents=True, exist_ok=True)
-    with csv_path.open("w", newline="", encoding="utf-8") as handle:
-        writer = csv.DictWriter(handle, fieldnames=CSV_HEADER)
-        writer.writeheader()
-        for row in rows:
-            writer.writerow(row)
 
-    print(f"Wrote {len(rows)} submission(s) to {csv_path}")
+def cmd_build(root: pathlib.Path, catalog_dir: pathlib.Path) -> int:
+    catalog_dir.mkdir(parents=True, exist_ok=True)
+    csv_path = catalog_dir / CSV_NAME
+    jsonld_path = catalog_dir / JSONLD_NAME
+
+    summaries = build_summaries(root, csv_path)
+    jsonld_path.write_text(render_jsonld(catalog_document(summaries)), encoding="utf-8")
+    csv_path.write_text(render_csv(summaries), encoding="utf-8")
+
+    print(f"Wrote {len(summaries)} submission(s) to {jsonld_path} and {csv_path}")
     return 0
 
 
+def cmd_check(root: pathlib.Path, catalog_dir: pathlib.Path) -> int:
+    csv_path = catalog_dir / CSV_NAME
+    jsonld_path = catalog_dir / JSONLD_NAME
+    schema_path = catalog_dir / SCHEMA_NAME
+
+    problems: list[str] = []
+
+    if not jsonld_path.exists():
+        problems.append(f"{jsonld_path} is missing; run `build`")
+    if not csv_path.exists():
+        problems.append(f"{csv_path} is missing; run `build`")
+    if problems:
+        return _report(problems)
+
+    document = json.loads(jsonld_path.read_text(encoding="utf-8"))
+    with csv_path.open(newline="", encoding="utf-8") as handle:
+        csv_rows = list(csv.DictReader(handle))
+
+    # Schema: the JSON-LD matches the published catalog schema.
+    problems.extend(_schema_problems(document, schema_path))
+
+    jsonld_paths = {entry.get("storagePath") for entry in document.get("dataset", [])}
+    csv_paths = {row["storage_path"] for row in csv_rows}
+
+    # Parity: the two projections list the same submissions.
+    for missing in sorted(jsonld_paths - csv_paths):
+        problems.append(f"{missing}: in the JSON-LD index but not the CSV")
+    for missing in sorted(csv_paths - jsonld_paths):
+        problems.append(f"{missing}: in the CSV but not the JSON-LD index")
+
+    # Fidelity: every indexed submission that still exists on disk matches what
+    # `build` would regenerate, so a hand-edit to an indexed row is caught. A
+    # submission present on disk but not yet indexed is not failed here; it is
+    # indexed after merge, not on the pull request.
+    expected = {summary["storage_path"]: summary for summary in build_summaries(root, csv_path)}
+    expected_document = catalog_document(list(expected.values()))
+    expected_entries = {entry["storagePath"]: entry for entry in expected_document["dataset"]}
+    expected_rows = {
+        row["storage_path"]: row
+        for row in csv.DictReader(io.StringIO(render_csv(list(expected.values()))))
+    }
+
+    for entry in document.get("dataset", []):
+        path = entry.get("storagePath")
+        if path in expected_entries and entry != expected_entries[path]:
+            problems.append(f"{path}: JSON-LD entry disagrees with the submission on disk (hand-edited or stale)")
+
+    for row in csv_rows:
+        path = row["storage_path"]
+        if path in expected_rows and dict(row) != dict(expected_rows[path]):
+            problems.append(f"{path}: CSV row disagrees with the submission on disk (hand-edited or stale)")
+
+    if not problems:
+        print(f"Catalog index check passed: {len(csv_rows)} submission(s), both projections agree.")
+        return 0
+    return _report(problems)
+
+
+def _schema_problems(document: dict, schema_path: pathlib.Path) -> list[str]:
+    if not schema_path.exists():
+        return [f"{schema_path} is missing"]
+    try:
+        import jsonschema
+    except ImportError:
+        print(f"note: jsonschema not installed; skipping schema validation of {schema_path.name}",
+              file=sys.stderr)
+        return []
+    schema = json.loads(schema_path.read_text(encoding="utf-8"))
+    validator = jsonschema.Draft7Validator(schema)
+    return [
+        f"schema: {error.message} at /{'/'.join(str(part) for part in error.path)}"
+        for error in sorted(validator.iter_errors(document), key=lambda e: list(e.path))
+    ]
+
+
+def _report(problems: list[str]) -> int:
+    print("Catalog index check failed:", file=sys.stderr)
+    for problem in problems:
+        print(f"- {problem}", file=sys.stderr)
+    return 1
+
+
+# ---------------------------------------------------------------------------
+# CLI
+# ---------------------------------------------------------------------------
+
+def main(argv: list[str]) -> int:
+    parser = argparse.ArgumentParser(prog="update_catalog_index.py")
+    subparsers = parser.add_subparsers(dest="command")
+
+    build = subparsers.add_parser("build", help="write both index files")
+    build.add_argument("submissions_dir")
+    build.add_argument("catalog_dir")
+
+    check = subparsers.add_parser("check", help="verify the committed index")
+    check.add_argument("submissions_dir")
+    check.add_argument("catalog_dir")
+
+    # Backward-compatible form: `update_catalog_index.py <submissions> <csv>`
+    # is treated as a build whose catalog dir is the CSV's parent.
+    if argv and argv[0] not in {"build", "check", "-h", "--help"}:
+        if len(argv) == 2:
+            return cmd_build(pathlib.Path(argv[0]), pathlib.Path(argv[1]).parent)
+        parser.error("legacy form takes exactly <submissions-dir> <csv-out>")
+
+    args = parser.parse_args(argv)
+    if args.command == "build":
+        return cmd_build(pathlib.Path(args.submissions_dir), pathlib.Path(args.catalog_dir))
+    if args.command == "check":
+        return cmd_check(pathlib.Path(args.submissions_dir), pathlib.Path(args.catalog_dir))
+    parser.print_help()
+    return 2
+
+
 if __name__ == "__main__":
-    raise SystemExit(main(sys.argv))
+    raise SystemExit(main(sys.argv[1:]))
