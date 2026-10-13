@@ -8,7 +8,7 @@ This directory shows the shape a submission takes; it carries no real data. Copy
 ## What a submission carries
 
 - **The dataset itself**, as URPX JSON-LD, declaring the URPX version it targets and the metadata the catalog reads: the utility (a `UtilityOperator`), the commodity (`urpx:commodity`), the rate plans (`ratePlanUniqueIdentifier` and `name`), the service class (`urpx:serviceClassName`), and the effective dates on the rate plan versions.
-- **The source document**, vendored (included as a file here, not only linked), with its capture date.
+- **The source document**, vendored (included as a file here beside the dataset, not only linked), with its capture date. [`source-document.txt`](source-document.txt) stands in for it in this template; replace that placeholder with the published tariff or rate document your dataset is built from. A vendored source document is a public record, marked `LicenseRef-PublicRecord` in the repository's `REUSE.toml`, not part of your licensed contribution.
 - **Whether the dataset was built from a real, published dataset**, or is a synthetic or illustrative example.
 
 State these in a README alongside the dataset, and in the pull request using the [submission template](../../.github/PULL_REQUEST_TEMPLATE.md).

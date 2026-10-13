@@ -4,28 +4,34 @@ version = 1
 # carry inline SPDX headers (JSON-LD and CSV data files cannot hold a comment
 # header) or that need an override.
 #
-# Prose, source, and meta files are Apache-2.0. Submitted datasets and the
-# catalog index they generate are data, licensed CDLA-Permissive-2.0. A
-# submission's own README carries an inline Apache-2.0 header, which, per
-# REUSE precedence, always wins over the aggregate rule below for that file,
-# so documentation under submissions/ does not need its own override block
-# here.
+# Prose, source, and meta files are Apache-2.0, declared by an inline SPDX
+# header in each file. A submission's own README carries such a header, so the
+# closest-precedence rules below leave it alone: a file's own header always
+# wins over a REUSE.toml annotation under precedence = "closest".
+#
+# Under submissions/, a submitted dataset (a URPX JSON-LD instance document) is
+# data: CDLA-Permissive-2.0, copyright the submitting contributor. Every other
+# vendored file is a source document — a published tariff or rate filing copied
+# in beside the dataset — which is a public record, not the contributor's work,
+# so it is marked LicenseRef-PublicRecord rather than stamped under the
+# contributor's data license.
 
 # -----------------------------------------------------------------------------
-# Submitted datasets under submissions/: data, not prose or tooling.
+# Repository-authored raster images, SVG diagrams, and their Graphviz DOT
+# sources. A vendored source image under submissions/ is a public record
+# instead, which the submissions/** rule below restamps.
 # -----------------------------------------------------------------------------
 [[annotations]]
-path = ["submissions/**"]
+path = ["**/*.png", "**/*.jpg", "**/*.jpeg", "**/*.svg", "**/*.dot"]
 precedence = "aggregate"
-SPDX-FileCopyrightText = "The submission's contributor, named in its pull request"
-SPDX-License-Identifier = "CDLA-Permissive-2.0"
+SPDX-FileCopyrightText = "The URPX Authors"
+SPDX-License-Identifier = "Apache-2.0"
 
 # -----------------------------------------------------------------------------
 # The catalog index: machine-generated from submitted datasets, licensed as
 # data like the submissions it summarizes. Both projections (the CSV table and
 # the JSON-LD DCAT catalog) are data. The catalog's JSON Schema is tooling and
-# carries its own Apache-2.0 .license sidecar, which takes precedence over
-# these aggregate rules for that file.
+# carries its own Apache-2.0 .license sidecar.
 # -----------------------------------------------------------------------------
 [[annotations]]
 path = ["catalog/**/*.csv", "catalog/**/*.jsonld"]
@@ -34,10 +40,28 @@ SPDX-FileCopyrightText = "The URPX Authors"
 SPDX-License-Identifier = "CDLA-Permissive-2.0"
 
 # -----------------------------------------------------------------------------
-# Binary raster images, SVG diagrams, and their Graphviz DOT sources.
+# Vendored source documents under submissions/: the published tariff or rate
+# filings a submission copies in beside its dataset. These are public records
+# of a regulatory process, not the contributor's creative work; see
+# LICENSES/LicenseRef-PublicRecord.txt. This catch-all covers every vendored
+# file whatever its extension; the dataset rule below restamps the JSON-LD
+# instance documents, and a submission README keeps its own inline Apache-2.0
+# header because this rule is precedence = "closest".
 # -----------------------------------------------------------------------------
 [[annotations]]
-path = ["**/*.png", "**/*.jpg", "**/*.jpeg", "**/*.svg", "**/*.dot"]
-precedence = "aggregate"
-SPDX-FileCopyrightText = "The URPX Authors"
-SPDX-License-Identifier = "Apache-2.0"
+path = ["submissions/**"]
+precedence = "closest"
+SPDX-FileCopyrightText = "The issuing utility or regulatory body"
+SPDX-License-Identifier = "LicenseRef-PublicRecord"
+
+# -----------------------------------------------------------------------------
+# Submitted datasets under submissions/: the URPX JSON-LD instance documents a
+# consumer loads. Data, licensed CDLA-Permissive-2.0, copyright the submitting
+# contributor. This rule sits after the source-document rule above so a dataset
+# resolves as data, not as a public record.
+# -----------------------------------------------------------------------------
+[[annotations]]
+path = ["submissions/**/*.jsonld"]
+precedence = "closest"
+SPDX-FileCopyrightText = "The submission's contributor, named in its pull request"
+SPDX-License-Identifier = "CDLA-Permissive-2.0"

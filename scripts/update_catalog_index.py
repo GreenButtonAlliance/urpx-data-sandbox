@@ -243,9 +243,14 @@ def _rate_plans(graph: Graph) -> list[dict]:
     return [seen[key] for key in sorted(seen)]
 
 
-def summarize(submission_dir: pathlib.Path, base: pathlib.Path) -> dict:
-    """Summarize one submission into the fields both projections draw from."""
-    graph = load_graph(submission_dir)
+def summarize(graph: Graph, submission_dir: pathlib.Path, base: pathlib.Path) -> dict:
+    """Summarize one submission into the fields both projections draw from.
+
+    The graph is loaded by the caller so that a document that fails to parse is
+    handled as a skippable bad submission, while a failure in the summary
+    queries below — which run over a graph that did parse — surfaces as a real
+    error rather than being mistaken for a bad submission.
+    """
     storage_path = repo_relative(submission_dir, base)
 
     counts = next(iter(graph.query(CLASS_COUNT_QUERY)))
@@ -258,6 +263,10 @@ def summarize(submission_dir: pathlib.Path, base: pathlib.Path) -> dict:
     except ValueError:
         version = ""
 
+    # A submission need not carry an effective date (an identity-only graph, for
+    # example, has no rate plan version with one). An empty result is not an
+    # error: the date fields are left blank below, and the submission is still
+    # indexed.
     dates = sorted(str(row.date)[:10] for row in graph.query(EFFECTIVE_DATES_QUERY)
                    if row.date is not None)
 
@@ -417,10 +426,16 @@ def build_summaries(root: pathlib.Path, csv_path: pathlib.Path) -> list[dict]:
     summaries = []
     for submission_dir in find_submission_dirs(root):
         try:
-            summary = summarize(submission_dir, base)
-        except Exception as error:  # a submission that fails to parse is skipped, not fatal
-            print(f"{submission_dir}: skipped ({error})", file=sys.stderr)
+            graph = load_graph(submission_dir)
+        except Exception as error:  # a submission whose documents do not parse is skipped, not fatal
+            print(f"{submission_dir}: skipped, could not parse its documents ({error})",
+                  file=sys.stderr)
             continue
+        # Summarising a graph that parsed should not fail. If it does, it is a
+        # bug in this script or a change in the vocabulary it queries, not a bad
+        # submission, so let it fail the run rather than silently drop the
+        # submission from the catalog and exit 0.
+        summary = summarize(graph, submission_dir, base)
         summary["date_added"] = existing_dates.get(summary["storage_path"], today)
         summaries.append(summary)
     summaries.sort(key=lambda summary: summary["storage_path"])

@@ -19,9 +19,13 @@ A change to the standard's vocabulary or shapes is a pull request against `urpx-
 
 ## Disclaimer
 
-**Nothing in this repository is reviewed for data content, completeness, or accuracy.** A submission is checked for conformance to the URPX version it states it targets, and for nothing else.
+This repository is part of the URPX Working Group's draft materials, hosted under LF Energy Standards and Specifications.
 
-Submissions are validated automatically. There is no additional human review before a submission is merged. Peer review may be added later if the community grows.
+LF Energy and the URPX Working Group do not review the datasets in this repository and take no responsibility for their accuracy, completeness, or fitness for any purpose. A submission is checked only for conformance to the URPX version it declares.
+
+**Nothing in this repository is reviewed for data content, completeness, or accuracy.**
+
+Submissions are validated automatically. On a passing check, any member of the `urpx-committers` GitHub team merges the submission; there is no additional human review before it is merged. Peer review may be added later if the community grows.
 
 ## Submission structure
 
@@ -49,6 +53,6 @@ Every dataset starts here. There is no route that skips this repository, includi
 
 ## License
 
-Prose, source, and meta files are licensed under the Apache License, Version 2.0. Submitted datasets and the catalog index are data, licensed under the Community Data License Agreement - Permissive 2.0 (CDLA-Permissive-2.0). See [NOTICE](NOTICE), [LICENSE](LICENSE), and `LICENSES/` for the CDLA-Permissive-2.0 text.
+Prose, source, and meta files are licensed under the Apache License, Version 2.0. Submitted datasets and the catalog index are data, licensed under the Community Data License Agreement - Permissive 2.0 (CDLA-Permissive-2.0). A vendored source document that a submission includes is a public record of a regulatory process, not the contributor's work, and is marked `LicenseRef-PublicRecord`. See [NOTICE](NOTICE), [LICENSE](LICENSE), and `LICENSES/` for the full texts.
 
 Security issues: see [SECURITY.md](SECURITY.md).
