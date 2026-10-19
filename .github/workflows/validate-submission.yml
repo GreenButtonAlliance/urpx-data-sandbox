@@ -38,9 +38,21 @@ jobs:
       - name: Validate submissions against their declared URPX version
         run: python3 scripts/validate_submission.py submissions/
 
-  # The SPARQL summary queries that log a passing submission to the catalog
-  # index. Runs only after a merge to main, never on a pull request, so the
-  # index never shares a commit path with a hand-edited file.
+      # The catalog is machine-owned. These checks do not regenerate it; they
+      # fail a pull request that hand-edits an indexed row, that lets the two
+      # projections disagree, or that places a git-ignored file inside a
+      # submission. A brand-new submission is not required to be indexed yet;
+      # the index is regenerated after merge, not on the pull request.
+      - name: Check the catalog index is consistent
+        run: python3 scripts/update_catalog_index.py check submissions/ catalog/
+
+      - name: Check the corpus walker agrees with git
+        run: python3 scripts/corpus.py submissions/ --verify
+
+  # Regenerates both projections of the catalog index — the CSV table and the
+  # JSON-LD DCAT catalog — from the submissions that have passed gate 1. Runs
+  # only after a merge to main, never on a pull request, so the index never
+  # shares a commit path with a hand-edited file.
   catalog:
     needs: validate
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
@@ -60,16 +72,16 @@ jobs:
         run: pip install rdflib
 
       - name: Regenerate the catalog index
-        run: python3 scripts/update_catalog_index.py submissions/ catalog/submissions-index.csv
+        run: python3 scripts/update_catalog_index.py build submissions/ catalog/
 
       - name: Commit the catalog index if it changed
         run: |
-          if git diff --quiet -- catalog/submissions-index.csv; then
+          if git diff --quiet -- catalog/submissions-index.csv catalog/submissions-index.jsonld; then
             echo "Catalog index unchanged."
             exit 0
           fi
           git config user.name "urpx-sandbox-bot"
           git config user.email "urpx-sandbox-bot@users.noreply.github.com"
-          git add catalog/submissions-index.csv
+          git add catalog/submissions-index.csv catalog/submissions-index.jsonld
           git commit -m "chore: refresh the submissions catalog index"
           git push

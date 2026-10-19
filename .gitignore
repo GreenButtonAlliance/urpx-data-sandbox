@@ -3,3 +3,7 @@
 
 .DS_Store
 urpx-data-sandbox.code-workspace
+
+# Python bytecode caches from the scripts/ tooling
+__pycache__/
+*.py[cod]
