@@ -1,2 +1,41 @@
 storage_path,utility,jurisdiction,commodity,rate_plans,service_class,urpx_version,rate_plan_count,rate_plan_version_count,pricing_model_count,price_definition_count,price_count,effective_date_start,effective_date_end,has_external_price_reference,date_added
+submissions/gpc-aps,Georgia Power Company,,electricity,APS (Schedule APS Agricultural Process Service),,0.5.1,1,1,0,18,48,2026-06-01,2026-06-01,no,2026-10-19
+submissions/gpc-eaf,Georgia Power Company,,electricity,EAF (Schedule EAF Electric Arc Furnace),,0.5.1,1,1,0,8,8,2026-06-01,2026-06-01,no,2026-10-19
+submissions/gpc-eol,Georgia Power Company,,electricity,EOL (Schedule EOL Energy for Outdoor Lighting Service),,0.5.1,1,1,0,187,234,2026-06-01,2026-06-01,no,2026-10-19
+submissions/gpc-flat,Georgia Power Company,,electricity,FLAT (Schedule FLAT FlatBill),,0.5.1,1,1,0,1,0,2024-05-01,2024-05-01,no,2026-10-19
+submissions/gpc-flat-gs,Georgia Power Company,,electricity,FLAT-GS (Schedule FLAT-GS FlatBill General Service),,0.5.1,1,1,0,1,0,2024-05-01,2024-05-01,no,2026-10-19
+submissions/gpc-fpa,Georgia Power Company,,electricity,FPA (Schedule FPA Fixed Pricing Alternative),,0.5.1,1,1,0,15,39,2026-06-01,2026-06-01,no,2026-10-19
+submissions/gpc-fs,Georgia Power Company,,electricity,FS (Schedule FS Farm Service),,0.5.1,1,1,0,12,33,2026-06-01,2026-06-01,no,2026-10-19
+submissions/gpc-g,Georgia Power Company,,electricity,G (Schedule G Full Use Service to Governmental Institutions),,0.5.1,1,1,0,15,43,2026-06-01,2026-06-01,no,2026-10-19
+submissions/gpc-gs,Georgia Power Company,,electricity,GS (Schedule GS General Service),,0.5.1,1,1,0,10,31,2026-06-01,2026-06-01,no,2026-10-19
+submissions/gpc-iop,Georgia Power Company,,electricity,IOP (Schedule IOP Irrigation Off-Peak Service),,0.5.1,1,1,0,15,42,2026-06-01,2026-06-01,no,2026-10-19
+submissions/gpc-ogs,Georgia Power Company,,electricity,OGS (Schedule OGS Optional General Service),,0.5.1,1,1,0,10,31,2026-06-01,2026-06-01,no,2026-10-19
+submissions/gpc-olg,Georgia Power Company,,electricity,OLG (Schedule OLG Outdoor Lighting Service Governmental Customers),,0.5.1,1,1,0,123,154,2026-06-01,2026-06-01,no,2026-10-19
+submissions/gpc-olng,Georgia Power Company,,electricity,OLNG (Schedule OLNG Outdoor Lighting Service Non-Governmental Customers),,0.5.1,1,1,0,127,159,2026-06-01,2026-06-01,no,2026-10-19
+submissions/gpc-pbd,Georgia Power Company,,electricity,PBD (Schedule PBD Pay by Day Service),,0.5.1,1,3,0,3,0,2020-01-01,2024-05-01,no,2026-10-19
+submissions/gpc-pll,Georgia Power Company,,electricity,PLL (Schedule PLL Power and Light Large),,0.5.1,1,1,0,17,45,2026-06-01,2026-06-01,no,2026-10-19
+submissions/gpc-plm,Georgia Power Company,,electricity,PLM (Schedule PLM Power and Light Medium),,0.5.1,1,1,0,17,45,2026-06-01,2026-06-01,no,2026-10-19
+submissions/gpc-pls,Georgia Power Company,,electricity,PLS (Schedule PLS Power and Light Small),,0.5.1,1,1,0,13,36,2026-06-01,2026-06-01,no,2026-10-19
+submissions/gpc-pps,Georgia Power Company,,electricity,PPS (Schedule PPS Pre-Pay Service),,0.5.1,1,1,0,11,13,2026-06-01,2026-06-01,no,2026-10-19
 submissions/gpc-r,Georgia Power Company,,electricity,R (Schedule R Residential Service),,0.5.1,1,2,0,22,34,2025-01-01,2026-06-01,no,2026-10-19
+submissions/gpc-rlg,Georgia Power Company,,electricity,RLG (Schedule RLG Roadway Lighting Governmental),,0.5.1,1,1,0,28,35,2026-06-01,2026-06-01,no,2026-10-19
+submissions/gpc-rtp-da,Georgia Power Company,,electricity,RTP-DA (Schedule RTP-DA Real Time Pricing - Day Ahead),,0.5.1,1,1,0,6,13,2026-06-01,2026-06-01,no,2026-10-19
+submissions/gpc-rtp-ha,Georgia Power Company,,electricity,RTP-HA (Schedule RTP-HA Real Time Pricing - Hour Ahead),,0.5.1,1,1,0,6,6,2026-06-01,2026-06-01,no,2026-10-19
+submissions/gpc-sas,Georgia Power Company,,electricity,SAS (Schedule SAS Seasonal Agricultural Service),,0.5.1,1,1,0,15,42,2026-06-01,2026-06-01,no,2026-10-19
+submissions/gpc-sas-nd,Georgia Power Company,,electricity,SAS-ND (Schedule SAS-ND Seasonal Agricultural Service - Non-Demand),,0.5.1,1,1,0,11,31,2026-06-01,2026-06-01,no,2026-10-19
+submissions/gpc-sch,Georgia Power Company,,electricity,SCH (Schedule SCH School Service),,0.5.1,1,1,0,17,45,2026-06-01,2026-06-01,no,2026-10-19
+submissions/gpc-slm,Georgia Power Company,,electricity,SLM (Schedule SLM School Load Management),,0.5.1,1,1,0,17,44,2026-06-01,2026-06-01,no,2026-10-19
+submissions/gpc-tc-m,Georgia Power Company,,electricity,TC-M (Schedule TC-M Traffic Control Metered Service),,0.5.1,1,1,0,10,30,2026-06-01,2026-06-01,no,2026-10-19
+submissions/gpc-tc-u,Georgia Power Company,,electricity,TC-U (Schedule TC-U Traffic Control Unmetered Service),,0.5.1,1,1,0,27,34,2026-06-01,2026-06-01,no,2026-10-19
+submissions/gpc-tou-eo,Georgia Power Company,,electricity,TOU-EO (Schedule TOU-EO Time of Use - Energy Only),,0.5.1,1,1,0,12,33,2026-06-01,2026-06-01,no,2026-10-19
+submissions/gpc-tou-eol,Georgia Power Company,,electricity,TOU-EOL (Schedule TOU-EOL Time of Use - Energy for Outdoor Lighting Service (Pilot)),,0.5.1,1,1,0,8,23,2026-06-01,2026-06-01,no,2026-10-19
+submissions/gpc-tou-evc,Georgia Power Company,,electricity,TOU-EVC (Schedule TOU-EVC Time of Use - Electric Vehicle Charging),,0.5.1,1,1,0,19,49,2026-06-01,2026-06-01,no,2026-10-19
+submissions/gpc-tou-fd,Georgia Power Company,,electricity,TOU-FD (Schedule TOU-FD Time of Use - Food and Drink),,0.5.1,1,1,0,17,47,2026-06-01,2026-06-01,no,2026-10-19
+submissions/gpc-tou-gsd,Georgia Power Company,,electricity,TOU-GSD (Schedule TOU-GSD Time of Use - General Service Demand),,0.5.1,1,1,0,29,74,2026-06-01,2026-06-01,no,2026-10-19
+submissions/gpc-tou-hlf,Georgia Power Company,,electricity,TOU-HLF (Schedule TOU-HLF Time of Use - High Load Factor),,0.5.1,1,1,0,15,40,2026-06-01,2026-06-01,no,2026-10-19
+submissions/gpc-tou-oa,Georgia Power Company,,electricity,TOU-OA (Schedule TOU-OA Time of Use - Overnight Advantage),,0.5.1,1,1,0,13,15,2026-06-01,2026-06-01,no,2026-10-19
+submissions/gpc-tou-rd,Georgia Power Company,,electricity,TOU-RD (Schedule TOU-RD Time of Use - Residential Demand),,0.5.1,1,2,0,30,36,2025-01-01,2026-06-01,no,2026-10-19
+submissions/gpc-tou-reo,Georgia Power Company,,electricity,TOU-REO (Schedule TOU-REO Time of Use - Residential Energy Only),,0.5.1,1,2,0,22,26,2025-01-01,2026-06-01,no,2026-10-19
+submissions/gpc-tou-rn,Georgia Power Company,,electricity,TOU-RN (Schedule TOU-RN Time of Use - Revenue Neutral),,0.5.1,1,1,0,15,39,2026-06-01,2026-06-01,no,2026-10-19
+submissions/gpc-tou-sc,Georgia Power Company,,electricity,TOU-SC (Schedule TOU-SC Time of Use - Supplier Choice),,0.5.1,1,1,0,15,39,2026-06-01,2026-06-01,no,2026-10-19
+submissions/gpc-ud,Georgia Power Company,,electricity,UD (Schedule UD Unmetered Devices),,0.5.1,1,1,0,10,15,2026-06-01,2026-06-01,no,2026-10-19
