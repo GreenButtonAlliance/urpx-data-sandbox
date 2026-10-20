@@ -2635,6 +2635,730 @@
           "fileKind": "source"
         }
       ]
+    },
+    {
+      "@id": "submissions/jemc-a/",
+      "@type": "dcat:Dataset",
+      "storagePath": "submissions/jemc-a",
+      "utility": "Jackson Electric Membership Corporation",
+      "commodity": [
+        "electricity"
+      ],
+      "ratePlan": [
+        {
+          "ratePlanIdentifier": "A",
+          "ratePlanName": "Schedule A Residential Service"
+        }
+      ],
+      "conformsTo": "https://github.com/urpx-org/urpx/raw/v0.5.1/ontology/urpx-ontology.ttl",
+      "urpxVersion": "0.5.1",
+      "ratePlanCount": 1,
+      "ratePlanVersionCount": 1,
+      "pricingModelCount": 0,
+      "priceDefinitionCount": 4,
+      "priceCount": 7,
+      "effectiveDateStart": "2026-01-01",
+      "effectiveDateEnd": "2026-01-01",
+      "hasExternalPriceReference": false,
+      "dateAdded": "2026-10-20",
+      "distribution": [
+        {
+          "@type": "dcat:Distribution",
+          "downloadURL": "submissions/jemc-a/versions/2026-01-01/rate-plan_jemc_a_2026-01-01.jsonld",
+          "mediaType": "application/ld+json",
+          "fileKind": "instance"
+        },
+        {
+          "@type": "dcat:Distribution",
+          "downloadURL": "submissions/jemc-a/versions/2026-01-01/jemc_a_2026-01-01.pdf",
+          "mediaType": "application/pdf",
+          "fileKind": "source"
+        },
+        {
+          "@type": "dcat:Distribution",
+          "downloadURL": "submissions/jemc-a/versions/2026-01-01/jemc_p_2022-01-01.pdf",
+          "mediaType": "application/pdf",
+          "fileKind": "source"
+        }
+      ]
+    },
+    {
+      "@id": "submissions/jemc-aea/",
+      "@type": "dcat:Dataset",
+      "storagePath": "submissions/jemc-aea",
+      "utility": "Jackson Electric Membership Corporation",
+      "commodity": [
+        "electricity"
+      ],
+      "ratePlan": [
+        {
+          "ratePlanIdentifier": "AEA",
+          "ratePlanName": "Schedule AEA Residential Energy Advantage Service"
+        }
+      ],
+      "conformsTo": "https://github.com/urpx-org/urpx/raw/v0.5.1/ontology/urpx-ontology.ttl",
+      "urpxVersion": "0.5.1",
+      "ratePlanCount": 1,
+      "ratePlanVersionCount": 1,
+      "pricingModelCount": 0,
+      "priceDefinitionCount": 4,
+      "priceCount": 7,
+      "effectiveDateStart": "2026-01-01",
+      "effectiveDateEnd": "2026-01-01",
+      "hasExternalPriceReference": false,
+      "dateAdded": "2026-10-20",
+      "distribution": [
+        {
+          "@type": "dcat:Distribution",
+          "downloadURL": "submissions/jemc-aea/versions/2026-01-01/rate-plan_jemc_aea_2026-01-01.jsonld",
+          "mediaType": "application/ld+json",
+          "fileKind": "instance"
+        },
+        {
+          "@type": "dcat:Distribution",
+          "downloadURL": "submissions/jemc-aea/versions/2026-01-01/jemc_aea_2026-01-01.pdf",
+          "mediaType": "application/pdf",
+          "fileKind": "source"
+        },
+        {
+          "@type": "dcat:Distribution",
+          "downloadURL": "submissions/jemc-aea/versions/2026-01-01/jemc_p_2022-01-01.pdf",
+          "mediaType": "application/pdf",
+          "fileKind": "source"
+        }
+      ]
+    },
+    {
+      "@id": "submissions/jemc-am/",
+      "@type": "dcat:Dataset",
+      "storagePath": "submissions/jemc-am",
+      "utility": "Jackson Electric Membership Corporation",
+      "commodity": [
+        "electricity"
+      ],
+      "ratePlan": [
+        {
+          "ratePlanIdentifier": "AM",
+          "ratePlanName": "Schedule AM Residential Multi-Family Service"
+        }
+      ],
+      "conformsTo": "https://github.com/urpx-org/urpx/raw/v0.5.1/ontology/urpx-ontology.ttl",
+      "urpxVersion": "0.5.1",
+      "ratePlanCount": 1,
+      "ratePlanVersionCount": 1,
+      "pricingModelCount": 0,
+      "priceDefinitionCount": 4,
+      "priceCount": 7,
+      "effectiveDateStart": "2026-01-01",
+      "effectiveDateEnd": "2026-01-01",
+      "hasExternalPriceReference": false,
+      "dateAdded": "2026-10-20",
+      "distribution": [
+        {
+          "@type": "dcat:Distribution",
+          "downloadURL": "submissions/jemc-am/versions/2026-01-01/rate-plan_jemc_am_2026-01-01.jsonld",
+          "mediaType": "application/ld+json",
+          "fileKind": "instance"
+        },
+        {
+          "@type": "dcat:Distribution",
+          "downloadURL": "submissions/jemc-am/versions/2026-01-01/jemc_am_2026-01-01.pdf",
+          "mediaType": "application/pdf",
+          "fileKind": "source"
+        },
+        {
+          "@type": "dcat:Distribution",
+          "downloadURL": "submissions/jemc-am/versions/2026-01-01/jemc_p_2022-01-01.pdf",
+          "mediaType": "application/pdf",
+          "fileKind": "source"
+        }
+      ]
+    },
+    {
+      "@id": "submissions/jemc-apev/",
+      "@type": "dcat:Dataset",
+      "storagePath": "submissions/jemc-apev",
+      "utility": "Jackson Electric Membership Corporation",
+      "commodity": [
+        "electricity"
+      ],
+      "ratePlan": [
+        {
+          "ratePlanIdentifier": "APEV",
+          "ratePlanName": "Schedule APEV Residential Plug-In Electric Vehicle Service"
+        }
+      ],
+      "conformsTo": "https://github.com/urpx-org/urpx/raw/v0.5.1/ontology/urpx-ontology.ttl",
+      "urpxVersion": "0.5.1",
+      "ratePlanCount": 1,
+      "ratePlanVersionCount": 1,
+      "pricingModelCount": 0,
+      "priceDefinitionCount": 5,
+      "priceCount": 4,
+      "effectiveDateStart": "2026-01-01",
+      "effectiveDateEnd": "2026-01-01",
+      "hasExternalPriceReference": false,
+      "dateAdded": "2026-10-20",
+      "distribution": [
+        {
+          "@type": "dcat:Distribution",
+          "downloadURL": "submissions/jemc-apev/versions/2026-01-01/rate-plan_jemc_apev_2026-01-01.jsonld",
+          "mediaType": "application/ld+json",
+          "fileKind": "instance"
+        },
+        {
+          "@type": "dcat:Distribution",
+          "downloadURL": "submissions/jemc-apev/versions/2026-01-01/jemc_apev_2026-01-01.pdf",
+          "mediaType": "application/pdf",
+          "fileKind": "source"
+        },
+        {
+          "@type": "dcat:Distribution",
+          "downloadURL": "submissions/jemc-apev/versions/2026-01-01/jemc_p_2022-01-01.pdf",
+          "mediaType": "application/pdf",
+          "fileKind": "source"
+        }
+      ]
+    },
+    {
+      "@id": "submissions/jemc-aphf/",
+      "@type": "dcat:Dataset",
+      "storagePath": "submissions/jemc-aphf",
+      "utility": "Jackson Electric Membership Corporation",
+      "commodity": [
+        "electricity"
+      ],
+      "ratePlan": [
+        {
+          "ratePlanIdentifier": "APHF",
+          "ratePlanName": "Schedule APHF Residential Poultry and Farm Service"
+        }
+      ],
+      "conformsTo": "https://github.com/urpx-org/urpx/raw/v0.5.1/ontology/urpx-ontology.ttl",
+      "urpxVersion": "0.5.1",
+      "ratePlanCount": 1,
+      "ratePlanVersionCount": 1,
+      "pricingModelCount": 0,
+      "priceDefinitionCount": 3,
+      "priceCount": 3,
+      "effectiveDateStart": "2026-01-01",
+      "effectiveDateEnd": "2026-01-01",
+      "hasExternalPriceReference": false,
+      "dateAdded": "2026-10-20",
+      "distribution": [
+        {
+          "@type": "dcat:Distribution",
+          "downloadURL": "submissions/jemc-aphf/versions/2026-01-01/rate-plan_jemc_aphf_2026-01-01.jsonld",
+          "mediaType": "application/ld+json",
+          "fileKind": "instance"
+        },
+        {
+          "@type": "dcat:Distribution",
+          "downloadURL": "submissions/jemc-aphf/versions/2026-01-01/jemc_aphf_2026-01-01.pdf",
+          "mediaType": "application/pdf",
+          "fileKind": "source"
+        },
+        {
+          "@type": "dcat:Distribution",
+          "downloadURL": "submissions/jemc-aphf/versions/2026-01-01/jemc_p_2022-01-01.pdf",
+          "mediaType": "application/pdf",
+          "fileKind": "source"
+        }
+      ]
+    },
+    {
+      "@id": "submissions/jemc-atou/",
+      "@type": "dcat:Dataset",
+      "storagePath": "submissions/jemc-atou",
+      "utility": "Jackson Electric Membership Corporation",
+      "commodity": [
+        "electricity"
+      ],
+      "ratePlan": [
+        {
+          "ratePlanIdentifier": "ATOU",
+          "ratePlanName": "Schedule ATOU Residential Time-Of-Use Service"
+        }
+      ],
+      "conformsTo": "https://github.com/urpx-org/urpx/raw/v0.5.1/ontology/urpx-ontology.ttl",
+      "urpxVersion": "0.5.1",
+      "ratePlanCount": 1,
+      "ratePlanVersionCount": 1,
+      "pricingModelCount": 0,
+      "priceDefinitionCount": 4,
+      "priceCount": 3,
+      "effectiveDateStart": "2026-01-01",
+      "effectiveDateEnd": "2026-01-01",
+      "hasExternalPriceReference": false,
+      "dateAdded": "2026-10-20",
+      "distribution": [
+        {
+          "@type": "dcat:Distribution",
+          "downloadURL": "submissions/jemc-atou/versions/2026-01-01/rate-plan_jemc_atou_2026-01-01.jsonld",
+          "mediaType": "application/ld+json",
+          "fileKind": "instance"
+        },
+        {
+          "@type": "dcat:Distribution",
+          "downloadURL": "submissions/jemc-atou/versions/2026-01-01/jemc_atou_2026-01-01.pdf",
+          "mediaType": "application/pdf",
+          "fileKind": "source"
+        },
+        {
+          "@type": "dcat:Distribution",
+          "downloadURL": "submissions/jemc-atou/versions/2026-01-01/jemc_p_2022-01-01.pdf",
+          "mediaType": "application/pdf",
+          "fileKind": "source"
+        }
+      ]
+    },
+    {
+      "@id": "submissions/jemc-cev/",
+      "@type": "dcat:Dataset",
+      "storagePath": "submissions/jemc-cev",
+      "utility": "Jackson Electric Membership Corporation",
+      "commodity": [
+        "electricity"
+      ],
+      "ratePlan": [
+        {
+          "ratePlanIdentifier": "CEV",
+          "ratePlanName": "Schedule CEV Commercial Plug-in Electric Vehicle Service"
+        }
+      ],
+      "conformsTo": "https://github.com/urpx-org/urpx/raw/v0.5.1/ontology/urpx-ontology.ttl",
+      "urpxVersion": "0.5.1",
+      "ratePlanCount": 1,
+      "ratePlanVersionCount": 1,
+      "pricingModelCount": 0,
+      "priceDefinitionCount": 4,
+      "priceCount": 4,
+      "effectiveDateStart": "2026-01-01",
+      "effectiveDateEnd": "2026-01-01",
+      "hasExternalPriceReference": false,
+      "dateAdded": "2026-10-20",
+      "distribution": [
+        {
+          "@type": "dcat:Distribution",
+          "downloadURL": "submissions/jemc-cev/versions/2026-01-01/rate-plan_jemc_cev_2026-01-01.jsonld",
+          "mediaType": "application/ld+json",
+          "fileKind": "instance"
+        },
+        {
+          "@type": "dcat:Distribution",
+          "downloadURL": "submissions/jemc-cev/versions/2026-01-01/jemc_cev_2026-01-01.pdf",
+          "mediaType": "application/pdf",
+          "fileKind": "source"
+        },
+        {
+          "@type": "dcat:Distribution",
+          "downloadURL": "submissions/jemc-cev/versions/2026-01-01/jemc_p_2022-01-01.pdf",
+          "mediaType": "application/pdf",
+          "fileKind": "source"
+        }
+      ]
+    },
+    {
+      "@id": "submissions/jemc-gs/",
+      "@type": "dcat:Dataset",
+      "storagePath": "submissions/jemc-gs",
+      "utility": "Jackson Electric Membership Corporation",
+      "commodity": [
+        "electricity"
+      ],
+      "ratePlan": [
+        {
+          "ratePlanIdentifier": "GS",
+          "ratePlanName": "Schedule GS General Service"
+        }
+      ],
+      "conformsTo": "https://github.com/urpx-org/urpx/raw/v0.5.1/ontology/urpx-ontology.ttl",
+      "urpxVersion": "0.5.1",
+      "ratePlanCount": 1,
+      "ratePlanVersionCount": 1,
+      "pricingModelCount": 0,
+      "priceDefinitionCount": 7,
+      "priceCount": 9,
+      "effectiveDateStart": "2026-01-01",
+      "effectiveDateEnd": "2026-01-01",
+      "hasExternalPriceReference": false,
+      "dateAdded": "2026-10-20",
+      "distribution": [
+        {
+          "@type": "dcat:Distribution",
+          "downloadURL": "submissions/jemc-gs/versions/2026-01-01/rate-plan_jemc_gs_2026-01-01.jsonld",
+          "mediaType": "application/ld+json",
+          "fileKind": "instance"
+        },
+        {
+          "@type": "dcat:Distribution",
+          "downloadURL": "submissions/jemc-gs/versions/2026-01-01/jemc_gs_2026-01-01.pdf",
+          "mediaType": "application/pdf",
+          "fileKind": "source"
+        },
+        {
+          "@type": "dcat:Distribution",
+          "downloadURL": "submissions/jemc-gs/versions/2026-01-01/jemc_p_2022-01-01.pdf",
+          "mediaType": "application/pdf",
+          "fileKind": "source"
+        }
+      ]
+    },
+    {
+      "@id": "submissions/jemc-gsae/",
+      "@type": "dcat:Dataset",
+      "storagePath": "submissions/jemc-gsae",
+      "utility": "Jackson Electric Membership Corporation",
+      "commodity": [
+        "electricity"
+      ],
+      "ratePlan": [
+        {
+          "ratePlanIdentifier": "GSAE",
+          "ratePlanName": "Schedule GSAE General Service - All Electric"
+        }
+      ],
+      "conformsTo": "https://github.com/urpx-org/urpx/raw/v0.5.1/ontology/urpx-ontology.ttl",
+      "urpxVersion": "0.5.1",
+      "ratePlanCount": 1,
+      "ratePlanVersionCount": 1,
+      "pricingModelCount": 0,
+      "priceDefinitionCount": 7,
+      "priceCount": 9,
+      "effectiveDateStart": "2026-01-01",
+      "effectiveDateEnd": "2026-01-01",
+      "hasExternalPriceReference": false,
+      "dateAdded": "2026-10-20",
+      "distribution": [
+        {
+          "@type": "dcat:Distribution",
+          "downloadURL": "submissions/jemc-gsae/versions/2026-01-01/rate-plan_jemc_gsae_2026-01-01.jsonld",
+          "mediaType": "application/ld+json",
+          "fileKind": "instance"
+        },
+        {
+          "@type": "dcat:Distribution",
+          "downloadURL": "submissions/jemc-gsae/versions/2026-01-01/jemc_gsae_2026-01-01.pdf",
+          "mediaType": "application/pdf",
+          "fileKind": "source"
+        },
+        {
+          "@type": "dcat:Distribution",
+          "downloadURL": "submissions/jemc-gsae/versions/2026-01-01/jemc_p_2022-01-01.pdf",
+          "mediaType": "application/pdf",
+          "fileKind": "source"
+        }
+      ]
+    },
+    {
+      "@id": "submissions/jemc-gstou/",
+      "@type": "dcat:Dataset",
+      "storagePath": "submissions/jemc-gstou",
+      "utility": "Jackson Electric Membership Corporation",
+      "commodity": [
+        "electricity"
+      ],
+      "ratePlan": [
+        {
+          "ratePlanIdentifier": "GSTOU",
+          "ratePlanName": "Schedule GSTOU General Service Time-of-Use"
+        }
+      ],
+      "conformsTo": "https://github.com/urpx-org/urpx/raw/v0.5.1/ontology/urpx-ontology.ttl",
+      "urpxVersion": "0.5.1",
+      "ratePlanCount": 1,
+      "ratePlanVersionCount": 1,
+      "pricingModelCount": 0,
+      "priceDefinitionCount": 6,
+      "priceCount": 6,
+      "effectiveDateStart": "2026-01-01",
+      "effectiveDateEnd": "2026-01-01",
+      "hasExternalPriceReference": false,
+      "dateAdded": "2026-10-20",
+      "distribution": [
+        {
+          "@type": "dcat:Distribution",
+          "downloadURL": "submissions/jemc-gstou/versions/2026-01-01/rate-plan_jemc_gstou_2026-01-01.jsonld",
+          "mediaType": "application/ld+json",
+          "fileKind": "instance"
+        },
+        {
+          "@type": "dcat:Distribution",
+          "downloadURL": "submissions/jemc-gstou/versions/2026-01-01/jemc_gstou_2026-01-01.pdf",
+          "mediaType": "application/pdf",
+          "fileKind": "source"
+        },
+        {
+          "@type": "dcat:Distribution",
+          "downloadURL": "submissions/jemc-gstou/versions/2026-01-01/jemc_p_2022-01-01.pdf",
+          "mediaType": "application/pdf",
+          "fileKind": "source"
+        }
+      ]
+    },
+    {
+      "@id": "submissions/jemc-lms/",
+      "@type": "dcat:Dataset",
+      "storagePath": "submissions/jemc-lms",
+      "utility": "Jackson Electric Membership Corporation",
+      "commodity": [
+        "electricity"
+      ],
+      "ratePlan": [
+        {
+          "ratePlanIdentifier": "LMS",
+          "ratePlanName": "Schedule LMS Load Management Service"
+        }
+      ],
+      "conformsTo": "https://github.com/urpx-org/urpx/raw/v0.5.1/ontology/urpx-ontology.ttl",
+      "urpxVersion": "0.5.1",
+      "ratePlanCount": 1,
+      "ratePlanVersionCount": 1,
+      "pricingModelCount": 0,
+      "priceDefinitionCount": 6,
+      "priceCount": 5,
+      "effectiveDateStart": "2026-01-01",
+      "effectiveDateEnd": "2026-01-01",
+      "hasExternalPriceReference": false,
+      "dateAdded": "2026-10-20",
+      "distribution": [
+        {
+          "@type": "dcat:Distribution",
+          "downloadURL": "submissions/jemc-lms/versions/2026-01-01/rate-plan_jemc_lms_2026-01-01.jsonld",
+          "mediaType": "application/ld+json",
+          "fileKind": "instance"
+        },
+        {
+          "@type": "dcat:Distribution",
+          "downloadURL": "submissions/jemc-lms/versions/2026-01-01/jemc_lms_2026-01-01.pdf",
+          "mediaType": "application/pdf",
+          "fileKind": "source"
+        },
+        {
+          "@type": "dcat:Distribution",
+          "downloadURL": "submissions/jemc-lms/versions/2026-01-01/jemc_p_2022-01-01.pdf",
+          "mediaType": "application/pdf",
+          "fileKind": "source"
+        }
+      ]
+    },
+    {
+      "@id": "submissions/jemc-mbs/",
+      "@type": "dcat:Dataset",
+      "storagePath": "submissions/jemc-mbs",
+      "utility": "Jackson Electric Membership Corporation",
+      "commodity": [
+        "electricity"
+      ],
+      "ratePlan": [
+        {
+          "ratePlanIdentifier": "MBS",
+          "ratePlanName": "Schedule MBS Market Based Service"
+        }
+      ],
+      "conformsTo": "https://github.com/urpx-org/urpx/raw/v0.5.1/ontology/urpx-ontology.ttl",
+      "urpxVersion": "0.5.1",
+      "ratePlanCount": 1,
+      "ratePlanVersionCount": 1,
+      "pricingModelCount": 0,
+      "priceDefinitionCount": 3,
+      "priceCount": 0,
+      "effectiveDateStart": "2022-01-01",
+      "effectiveDateEnd": "2022-01-01",
+      "hasExternalPriceReference": false,
+      "dateAdded": "2026-10-20",
+      "distribution": [
+        {
+          "@type": "dcat:Distribution",
+          "downloadURL": "submissions/jemc-mbs/versions/2022-01-01/rate-plan_jemc_mbs_2022-01-01.jsonld",
+          "mediaType": "application/ld+json",
+          "fileKind": "instance"
+        },
+        {
+          "@type": "dcat:Distribution",
+          "downloadURL": "submissions/jemc-mbs/versions/2022-01-01/jemc_mbs_2022-01-01.pdf",
+          "mediaType": "application/pdf",
+          "fileKind": "source"
+        }
+      ]
+    },
+    {
+      "@id": "submissions/jemc-qf/",
+      "@type": "dcat:Dataset",
+      "storagePath": "submissions/jemc-qf",
+      "utility": "Jackson Electric Membership Corporation",
+      "commodity": [
+        "electricity"
+      ],
+      "ratePlan": [
+        {
+          "ratePlanIdentifier": "QF",
+          "ratePlanName": "Schedule QF Qualifying Facilities Service"
+        }
+      ],
+      "conformsTo": "https://github.com/urpx-org/urpx/raw/v0.5.1/ontology/urpx-ontology.ttl",
+      "urpxVersion": "0.5.1",
+      "ratePlanCount": 1,
+      "ratePlanVersionCount": 1,
+      "pricingModelCount": 0,
+      "priceDefinitionCount": 4,
+      "priceCount": 1,
+      "effectiveDateStart": "2022-01-01",
+      "effectiveDateEnd": "2022-01-01",
+      "hasExternalPriceReference": false,
+      "dateAdded": "2026-10-20",
+      "distribution": [
+        {
+          "@type": "dcat:Distribution",
+          "downloadURL": "submissions/jemc-qf/versions/2022-01-01/rate-plan_jemc_qf_2022-01-01.jsonld",
+          "mediaType": "application/ld+json",
+          "fileKind": "instance"
+        },
+        {
+          "@type": "dcat:Distribution",
+          "downloadURL": "submissions/jemc-qf/versions/2022-01-01/jemc_qf_2022-01-01.pdf",
+          "mediaType": "application/pdf",
+          "fileKind": "source"
+        }
+      ]
+    },
+    {
+      "@id": "submissions/jemc-s/",
+      "@type": "dcat:Dataset",
+      "storagePath": "submissions/jemc-s",
+      "utility": "Jackson Electric Membership Corporation",
+      "commodity": [
+        "electricity"
+      ],
+      "ratePlan": [
+        {
+          "ratePlanIdentifier": "S",
+          "ratePlanName": "Schedule S Outdoor Lighting Service"
+        }
+      ],
+      "conformsTo": "https://github.com/urpx-org/urpx/raw/v0.5.1/ontology/urpx-ontology.ttl",
+      "urpxVersion": "0.5.1",
+      "ratePlanCount": 1,
+      "ratePlanVersionCount": 1,
+      "pricingModelCount": 0,
+      "priceDefinitionCount": 80,
+      "priceCount": 81,
+      "effectiveDateStart": "2026-01-01",
+      "effectiveDateEnd": "2026-01-01",
+      "hasExternalPriceReference": false,
+      "dateAdded": "2026-10-20",
+      "distribution": [
+        {
+          "@type": "dcat:Distribution",
+          "downloadURL": "submissions/jemc-s/versions/2026-01-01/rate-plan_jemc_s_2026-01-01.jsonld",
+          "mediaType": "application/ld+json",
+          "fileKind": "instance"
+        },
+        {
+          "@type": "dcat:Distribution",
+          "downloadURL": "submissions/jemc-s/versions/2026-01-01/jemc_p_2022-01-01.pdf",
+          "mediaType": "application/pdf",
+          "fileKind": "source"
+        },
+        {
+          "@type": "dcat:Distribution",
+          "downloadURL": "submissions/jemc-s/versions/2026-01-01/jemc_s_2026-01-01.pdf",
+          "mediaType": "application/pdf",
+          "fileKind": "source"
+        }
+      ]
+    },
+    {
+      "@id": "submissions/jemc-slms/",
+      "@type": "dcat:Dataset",
+      "storagePath": "submissions/jemc-slms",
+      "utility": "Jackson Electric Membership Corporation",
+      "commodity": [
+        "electricity"
+      ],
+      "ratePlan": [
+        {
+          "ratePlanIdentifier": "SLMS",
+          "ratePlanName": "Schedule SLMS School Load Management Service"
+        }
+      ],
+      "conformsTo": "https://github.com/urpx-org/urpx/raw/v0.5.1/ontology/urpx-ontology.ttl",
+      "urpxVersion": "0.5.1",
+      "ratePlanCount": 1,
+      "ratePlanVersionCount": 1,
+      "pricingModelCount": 0,
+      "priceDefinitionCount": 6,
+      "priceCount": 5,
+      "effectiveDateStart": "2026-01-01",
+      "effectiveDateEnd": "2026-01-01",
+      "hasExternalPriceReference": false,
+      "dateAdded": "2026-10-20",
+      "distribution": [
+        {
+          "@type": "dcat:Distribution",
+          "downloadURL": "submissions/jemc-slms/versions/2026-01-01/rate-plan_jemc_slms_2026-01-01.jsonld",
+          "mediaType": "application/ld+json",
+          "fileKind": "instance"
+        },
+        {
+          "@type": "dcat:Distribution",
+          "downloadURL": "submissions/jemc-slms/versions/2026-01-01/jemc_p_2022-01-01.pdf",
+          "mediaType": "application/pdf",
+          "fileKind": "source"
+        },
+        {
+          "@type": "dcat:Distribution",
+          "downloadURL": "submissions/jemc-slms/versions/2026-01-01/jemc_slms_2026-01-01.pdf",
+          "mediaType": "application/pdf",
+          "fileKind": "source"
+        }
+      ]
+    },
+    {
+      "@id": "submissions/jemc-ts/",
+      "@type": "dcat:Dataset",
+      "storagePath": "submissions/jemc-ts",
+      "utility": "Jackson Electric Membership Corporation",
+      "commodity": [
+        "electricity"
+      ],
+      "ratePlan": [
+        {
+          "ratePlanIdentifier": "TS",
+          "ratePlanName": "Schedule TS Temporary Service"
+        }
+      ],
+      "conformsTo": "https://github.com/urpx-org/urpx/raw/v0.5.1/ontology/urpx-ontology.ttl",
+      "urpxVersion": "0.5.1",
+      "ratePlanCount": 1,
+      "ratePlanVersionCount": 1,
+      "pricingModelCount": 0,
+      "priceDefinitionCount": 5,
+      "priceCount": 8,
+      "effectiveDateStart": "2026-01-01",
+      "effectiveDateEnd": "2026-01-01",
+      "hasExternalPriceReference": false,
+      "dateAdded": "2026-10-20",
+      "distribution": [
+        {
+          "@type": "dcat:Distribution",
+          "downloadURL": "submissions/jemc-ts/versions/2026-01-01/rate-plan_jemc_ts_2026-01-01.jsonld",
+          "mediaType": "application/ld+json",
+          "fileKind": "instance"
+        },
+        {
+          "@type": "dcat:Distribution",
+          "downloadURL": "submissions/jemc-ts/versions/2026-01-01/jemc_p_2022-01-01.pdf",
+          "mediaType": "application/pdf",
+          "fileKind": "source"
+        },
+        {
+          "@type": "dcat:Distribution",
+          "downloadURL": "submissions/jemc-ts/versions/2026-01-01/jemc_ts_2026-01-01.pdf",
+          "mediaType": "application/pdf",
+          "fileKind": "source"
+        }
+      ]
     }
   ]
 }

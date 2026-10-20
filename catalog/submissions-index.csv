@@ -39,3 +39,19 @@ submissions/gpc-tou-reo,Georgia Power Company,,electricity,TOU-REO (Schedule TOU
 submissions/gpc-tou-rn,Georgia Power Company,,electricity,TOU-RN (Schedule TOU-RN Time of Use - Revenue Neutral),,0.5.1,1,1,0,15,39,2026-06-01,2026-06-01,no,2026-10-19
 submissions/gpc-tou-sc,Georgia Power Company,,electricity,TOU-SC (Schedule TOU-SC Time of Use - Supplier Choice),,0.5.1,1,1,0,15,39,2026-06-01,2026-06-01,no,2026-10-19
 submissions/gpc-ud,Georgia Power Company,,electricity,UD (Schedule UD Unmetered Devices),,0.5.1,1,1,0,10,15,2026-06-01,2026-06-01,no,2026-10-19
+submissions/jemc-a,Jackson Electric Membership Corporation,,electricity,A (Schedule A Residential Service),,0.5.1,1,1,0,4,7,2026-01-01,2026-01-01,no,2026-10-20
+submissions/jemc-aea,Jackson Electric Membership Corporation,,electricity,AEA (Schedule AEA Residential Energy Advantage Service),,0.5.1,1,1,0,4,7,2026-01-01,2026-01-01,no,2026-10-20
+submissions/jemc-am,Jackson Electric Membership Corporation,,electricity,AM (Schedule AM Residential Multi-Family Service),,0.5.1,1,1,0,4,7,2026-01-01,2026-01-01,no,2026-10-20
+submissions/jemc-apev,Jackson Electric Membership Corporation,,electricity,APEV (Schedule APEV Residential Plug-In Electric Vehicle Service),,0.5.1,1,1,0,5,4,2026-01-01,2026-01-01,no,2026-10-20
+submissions/jemc-aphf,Jackson Electric Membership Corporation,,electricity,APHF (Schedule APHF Residential Poultry and Farm Service),,0.5.1,1,1,0,3,3,2026-01-01,2026-01-01,no,2026-10-20
+submissions/jemc-atou,Jackson Electric Membership Corporation,,electricity,ATOU (Schedule ATOU Residential Time-Of-Use Service),,0.5.1,1,1,0,4,3,2026-01-01,2026-01-01,no,2026-10-20
+submissions/jemc-cev,Jackson Electric Membership Corporation,,electricity,CEV (Schedule CEV Commercial Plug-in Electric Vehicle Service),,0.5.1,1,1,0,4,4,2026-01-01,2026-01-01,no,2026-10-20
+submissions/jemc-gs,Jackson Electric Membership Corporation,,electricity,GS (Schedule GS General Service),,0.5.1,1,1,0,7,9,2026-01-01,2026-01-01,no,2026-10-20
+submissions/jemc-gsae,Jackson Electric Membership Corporation,,electricity,GSAE (Schedule GSAE General Service - All Electric),,0.5.1,1,1,0,7,9,2026-01-01,2026-01-01,no,2026-10-20
+submissions/jemc-gstou,Jackson Electric Membership Corporation,,electricity,GSTOU (Schedule GSTOU General Service Time-of-Use),,0.5.1,1,1,0,6,6,2026-01-01,2026-01-01,no,2026-10-20
+submissions/jemc-lms,Jackson Electric Membership Corporation,,electricity,LMS (Schedule LMS Load Management Service),,0.5.1,1,1,0,6,5,2026-01-01,2026-01-01,no,2026-10-20
+submissions/jemc-mbs,Jackson Electric Membership Corporation,,electricity,MBS (Schedule MBS Market Based Service),,0.5.1,1,1,0,3,0,2022-01-01,2022-01-01,no,2026-10-20
+submissions/jemc-qf,Jackson Electric Membership Corporation,,electricity,QF (Schedule QF Qualifying Facilities Service),,0.5.1,1,1,0,4,1,2022-01-01,2022-01-01,no,2026-10-20
+submissions/jemc-s,Jackson Electric Membership Corporation,,electricity,S (Schedule S Outdoor Lighting Service),,0.5.1,1,1,0,80,81,2026-01-01,2026-01-01,no,2026-10-20
+submissions/jemc-slms,Jackson Electric Membership Corporation,,electricity,SLMS (Schedule SLMS School Load Management Service),,0.5.1,1,1,0,6,5,2026-01-01,2026-01-01,no,2026-10-20
+submissions/jemc-ts,Jackson Electric Membership Corporation,,electricity,TS (Schedule TS Temporary Service),,0.5.1,1,1,0,5,8,2026-01-01,2026-01-01,no,2026-10-20
